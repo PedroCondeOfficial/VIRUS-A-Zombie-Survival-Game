@@ -1,4 +1,4 @@
-import pygame, sys, character, random, time
+import pygame, sys, character, random, functions
 from pygame.locals import *
 
 pygame.init()
@@ -8,27 +8,20 @@ pygame.mixer.init()
 resx = 500
 resy = 500
 screen = pygame.display.set_mode((resx, resy))
-
-black = (0, 0, 0)
-white = (255,255,255)
-red = (255,0,0)
-blue = (0,0,255)
-
 clock = pygame.time.Clock()
 round_number = 0
-
 pygame.key.set_repeat(10, 10)
-
 player = character.Character(screen, 250, 250)
 downflag = False
-
 enemies = []
 round_flag = True
-
+alive = True
+m = 0
 
 
 mapa = pygame.image.load('map.bmp')
 
+"""
 def health_regen():
     screen.fill(black)
     if player.health < 0:
@@ -62,8 +55,7 @@ tick = 0
 k = 0
 m = 0
 alive = True
-rightflag = None
-leftflag = None
+
 
 while m == 0:
     loop('start.wav')
@@ -130,7 +122,7 @@ while m == 0:
                 elif player.yc > resy:
                     player.yc = resy
                 else:
-                    if rightflag == True:
+                    if player.rightflag == True:
                         player.xc += down * 5
                         leftflag = False
                     else:
@@ -148,12 +140,13 @@ while m == 0:
                 elif player.yc > resy:
                     player.yc = resy
                 else:
-                    if leftflag == True:
+                    if player.leftflag == True:
                         player.xc -= down * 5
+                        rightflag = False
                     else:
                         player.character = pygame.transform.flip(player.character, True, False)
-                        rightflag = False
-                        leftflag = True
+                        player.rightflag = False
+                        player.leftflag = True
                         player.xc -= down * 5
             if event.key == K_a:
                 if down == True and downflag == False:
@@ -194,9 +187,23 @@ while m == 0:
         for enemy in enemies:
             speed = random.randrange(0,4)
             if enemy.xc < player.xc:
-                enemy.xc += speed
+                if enemy.rightflag == True:
+                    enemy.xc += speed
+                    enemy.leftflag = False
+                else:
+                    enemy.character = pygame.transform.flip(enemy.character, True, False)
+                    enemy.rightflag = True
+                    enemy.leftflag = False
+                    enemy.xc += speed
             if enemy.xc > player.xc:
-                enemy.xc -= speed
+                if enemy.leftflag == True:
+                    enemy.xc -= speed
+                    enemy.rightflag = False
+                else:
+                    enemy.character = pygame.transform.flip(enemy.character, True, False)
+                    enemy.rightflag = False
+                    enemy.leftflag = True
+                    enemy.xc -= speed
             if enemy.yc < player.yc:
                 enemy.yc += speed
             if enemy.yc > player.yc:
@@ -254,4 +261,7 @@ while m == 0:
         elif event.key == K_ESCAPE:
             sys.exit()
         else:
-            m = 1
+            m = 1"""
+
+functions.startloop(screen)
+functions.gameloop(screen, resx, resy, player, clock, enemies, alive, mapa, m)

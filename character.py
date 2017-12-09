@@ -20,6 +20,8 @@ class Character:
         self.special = pygame.image.load('special.png').convert_alpha()
         self.reset = pygame.image.load('character.png').convert_alpha()
         self.check = False
+        self.rightflag = None
+        self.leftflag = None
 
     def detect(self, enemies):
         self.enemies = enemies
@@ -68,7 +70,8 @@ class Zombie:
         self.attack = pygame.image.load('zombieattack.png').convert_alpha()
         self.reset = pygame.image.load('zombie.png').convert_alpha()
         self.zombflag = True
-
+        self.rightflag = None
+        self.leftflag = None
 
     def basic_attack(self):
         self.surf.fill(black)
@@ -92,7 +95,8 @@ class Hound:
         self.attack = pygame.image.load('houndattack.png').convert_alpha()
         self.reset = pygame.image.load('hound.png').convert_alpha()
         self.houndflag = True
-
+        self.rightflag = None
+        self.leftflag = None
 
     def basic_attack(self):
         self.surf.fill(black)
