@@ -1,10 +1,13 @@
-import pygame, sys, character, random, functions
+import pygame, sys, character, random
 from pygame.locals import *
 
 pygame.init()
 pygame.mixer.init()
 
-
+white = (255,255,255)
+red = (255,0,0)
+blue = (0,0,255)
+black = (0, 0, 0)
 resx = 500
 resy = 500
 screen = pygame.display.set_mode((resx, resy))
@@ -17,11 +20,11 @@ enemies = []
 round_flag = True
 alive = True
 m = 0
-
-
 mapa = pygame.image.load('map.bmp')
+leftflag = True
+rightflag = True
 
-"""
+
 def health_regen():
     screen.fill(black)
     if player.health < 0:
@@ -78,7 +81,7 @@ while m == 0:
         if player.health < 0:
             alive = False
         screen.fill(black)
-        clock.tick(40)
+        clock.tick(30)
         health_regen()
         mana_regen()
         font = pygame.font.SysFont("monospace",30)
@@ -124,11 +127,11 @@ while m == 0:
                 else:
                     if player.rightflag == True:
                         player.xc += down * 5
-                        leftflag = False
-                    else:
+                        player.leftflag = False
+                    elif player.rightflag == False or player.rightflag == None:
                         player.character = pygame.transform.flip(player.character, True, False)
-                        rightflag = True
-                        leftflag = False
+                        player.rightflag = True
+                        player.leftflag = False
                         player.xc += down * 5
             elif event.key == K_LEFT:
                 if player.xc < 0:
@@ -142,11 +145,13 @@ while m == 0:
                 else:
                     if player.leftflag == True:
                         player.xc -= down * 5
-                        rightflag = False
-                    else:
+                        player.rightflag = False
+                    elif player.leftflag == False:
                         player.character = pygame.transform.flip(player.character, True, False)
                         player.rightflag = False
                         player.leftflag = True
+                        player.xc -= down * 5
+                    else:
                         player.xc -= down * 5
             if event.key == K_a:
                 if down == True and downflag == False:
@@ -156,6 +161,8 @@ while m == 0:
                 elif up == True:
                     player.funcreset()
                     downflag = False
+                    if player.rightflag == True:
+                        player.character = pygame.transform.flip(player.character, True, False)
             elif event.key == K_s:
                 if down == True and downflag == False:
                     if player.mana > 25:
@@ -167,6 +174,8 @@ while m == 0:
                 elif up == True:
                     player.funcreset()
                     downflag = False
+                    if player.rightflag == True:
+                        player.character = pygame.transform.flip(player.character, True, False)
             elif event.key == K_ESCAPE:
                 sys.exit()
         for enemy in enemies:
@@ -261,7 +270,4 @@ while m == 0:
         elif event.key == K_ESCAPE:
             sys.exit()
         else:
-            m = 1"""
-
-functions.startloop(screen)
-functions.gameloop(screen, resx, resy, player, clock, enemies, alive, mapa, m)
+            m = 1
